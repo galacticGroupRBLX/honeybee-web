@@ -101,22 +101,27 @@
         </footer>
     </div>
 
-    <script>
+     <script>
         document.getElementById('notify-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
 
             const email = event.target.email.value;
 
-            fetch('submit.php', {
+            const webhookUrl = 'https://discord.com/api/webhooks/your-webhook-id/your-webhook-token';
+
+            const payload = {
+                content: `New signup: ${email}`
+            };
+
+            fetch(webhookUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email: email })
+                body: JSON.stringify(payload)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+            .then(response => {
+                if (response.ok) {
                     alert('Thank you for signing up!');
                 } else {
                     alert('There was an error. Please try again.');
